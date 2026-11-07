@@ -1,0 +1,18 @@
+{
+  "name": "San Apptolin",
+  "short_name": "San Apptolin",
+  "description": "La guía en directo de las Ferias y Fiestas de San Antolín 2026.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#EFE9DA",
+  "theme_color": "#241132",
+  "lang": "es-ES",
+  "icons": [
+    {
+      "src": "/app-logo.png",
+      "sizes": "1254x1254",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

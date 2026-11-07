@@ -1,0 +1,141 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-papel text-tinta font-sans antialiased;
+    /* trama sutil de papel de programa */
+    background-image: radial-gradient(rgba(36, 17, 50, 0.045) 1px, transparent 1px);
+    background-size: 22px 22px;
+  }
+
+  :focus-visible {
+    @apply outline-none ring-2 ring-azul ring-offset-2 ring-offset-papel rounded-sm;
+  }
+
+  ::selection {
+    @apply bg-azul text-panuelo;
+  }
+}
+
+@layer components {
+  /* Rótulo alto y condensado, como el cartel de la Villa */
+  .rotulo {
+    @apply font-display uppercase leading-[0.86] tracking-[0.01em];
+    font-weight: 700;
+  }
+
+  .etiqueta {
+    @apply font-mono text-[11px] uppercase tracking-[0.16em];
+  }
+
+  .tarjeta {
+    @apply rounded-2xl border border-tinta/10 bg-panuelo;
+  }
+}
+
+/* Leaflet: adaptamos los controles al lenguaje de la app */
+.leaflet-container {
+  font-family: inherit;
+  background: #e8e2d3;
+}
+
+.leaflet-control-attribution {
+  font-size: 10px !important;
+  background: rgba(251, 250, 246, 0.85) !important;
+}
+
+.leaflet-popup-content-wrapper {
+  border-radius: 14px !important;
+  border: 1px solid rgba(36, 17, 50, 0.12);
+  box-shadow: 0 12px 30px -12px rgba(36, 17, 50, 0.45) !important;
+}
+
+.leaflet-popup-content {
+  margin: 12px 14px !important;
+  font-size: 13px;
+}
+
+/* Marcador: un punto que señala el sitio sin tapar el plano.
+   La caja es mayor que el punto para que se pueda tocar con el dedo. */
+.marcador-lugar {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+}
+
+.marcador-lugar__centro {
+  width: 14px;
+  height: 14px;
+  border-radius: 999px;
+  background: var(--pin, #6b7391);
+  box-shadow:
+    0 0 0 2.5px #fbfaf6,
+    0 2px 5px rgba(36, 17, 50, 0.55);
+}
+
+/* Los sitios sin nada hoy pesan menos, pero siguen leyéndose sobre el plano. */
+.marcador-lugar--apagado .marcador-lugar__centro {
+  width: 11px;
+  height: 11px;
+  box-shadow:
+    0 0 0 2px #fbfaf6,
+    0 1px 4px rgba(36, 17, 50, 0.45);
+}
+
+.marcador-lugar--activo .marcador-lugar__centro {
+  width: 16px;
+  height: 16px;
+}
+
+/* El foco de teclado sigue la forma redonda del punto, no la caja de toque. */
+.leaflet-marker-icon:focus-visible {
+  box-shadow: none;
+  border-radius: 999px;
+}
+
+.leaflet-marker-icon:focus-visible .marcador-lugar__centro {
+  box-shadow:
+    0 0 0 2.5px #fbfaf6,
+    0 0 0 5px #6d2b8e,
+    0 2px 5px rgba(36, 17, 50, 0.55);
+}
+
+/* Solo lo que está pasando ahora late. */
+.marcador-lugar--activo::before {
+  content: '';
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  background: rgba(168, 35, 43, 0.35);
+  animation: marcador-onda 1.9s ease-out infinite;
+}
+
+@keyframes marcador-onda {
+  from {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+  to {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
